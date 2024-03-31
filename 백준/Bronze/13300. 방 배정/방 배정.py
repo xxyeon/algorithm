@@ -1,28 +1,28 @@
+#한방에 같은 학년 같은 성별
+#방의 최소 개수
 import sys
 n, k = map(int, input().split())
-data = [tuple(map(int, sys.stdin.readline().rstrip().split())) for _ in range(n)]
+data = list(tuple(map(int, sys.stdin.readline().rstrip().split())) for _ in range(n))
 
-idx = 0
-data = sorted(data, key= lambda x:(x[0], x[1]))
-for i in range(n):
-  if data[i][0] == 1:
-    idx = i #남학생 시작 idx
-    break
-w_lst = data[:idx]
-m_lst = data[idx:]
-w_grade = []
-m_grade = []
+data2 = data.copy()
+data = set(data)
 
-for i in w_lst:
-  w_grade.append(i[1])
-for i in m_lst:
-  m_grade.append(i[1])
 
+#성별로 나누고, 학년으로 나누고
+#여학생이면서 1학년
+#완전탐색 O(n^2) -> 100만
 cnt = 0
-for i in range(1,7):
-  cnt += w_grade.count(i)//k + w_grade.count(i)%k
-
-for i in range(1,7):
-  cnt += m_grade.count(i)//k + m_grade.count(i)%k
-
-print(cnt)
+room = 0
+for i in data:
+  for j in data2:
+    if i[0] == j[0] and i[1] == j[1]: #성별과 학년 같은지 검사
+      cnt += 1
+  if cnt < k:
+    room += 1
+  else:
+    room += cnt // k
+    if cnt % k > 0:
+      room += 1
+  cnt=0
+  
+print(room)
