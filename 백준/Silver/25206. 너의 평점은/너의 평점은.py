@@ -9,8 +9,6 @@ for _ in range(20):
   if (a == "P"):
     continue
   s_sum += float(s)
-  for key in list(s_avg.keys()):
-    if key == a:
-      sum += s_avg[key] * float(s)
+  sum += s_avg[a] * float(s)
       
 print("%0.4f" %(sum/s_sum))
