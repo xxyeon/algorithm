@@ -1,5 +1,5 @@
 # arr[row][col]
-
+#1차 풀이
 n = input()
 count = 0
 col, row = ord(n[0]) - ord('a') + 1, int(n[1])
@@ -24,3 +24,17 @@ for j in move2:
   count+=1
   
 print(count)
+
+#2차 풀이
+start = input()
+cnt = 0
+x = ord(start[0])
+y = int(start[1])
+lst = [(2,1), (-2,1), (2,-1), (-2,1), (1,-2) ,(-1,2), (1,2),(-1,-2)] 
+for k in lst:
+  nx = x+k[0]
+  ny = y+k[1]
+  if ord('a')<=nx<=ord('h') and 1<=ny<=8:
+    cnt += 1
+       
+print(cnt)
