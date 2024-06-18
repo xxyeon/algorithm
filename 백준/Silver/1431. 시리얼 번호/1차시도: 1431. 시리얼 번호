@@ -1,0 +1,13 @@
+n = int(input())
+data = []
+for _ in range(n):
+  d = input()
+  sum = 0
+  for i in d:
+    if 48 <= ord(i) <= 57:
+      sum += ord(i) #-> 문자 숫자를 아스키코드 숫자로 변환해서 더해도 정렬하는데 답은 동일하다고 생각했는데? 틀리다고 나옴
+  data.append((len(d), sum, d))
+
+data.sort()
+for i in data:
+  print(i[2])
