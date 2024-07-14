@@ -1,10 +1,10 @@
 # [level 1] 성격 유형 검사하기 - 118666 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/118666) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/118666?language=python3) 
 
 ### 성능 요약
 
-메모리: 10.4 MB, 시간: 0.59 ms
+메모리: 10.3 MB, 시간: 0.59 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 07월 14일 23:47:51
+2024년 07월 14일 23:52:07
 
 ### 문제 설명
 

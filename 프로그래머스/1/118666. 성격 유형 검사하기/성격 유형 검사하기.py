@@ -31,23 +31,17 @@ def solution(survey, choices):
         else:
             continue
         #c가동의인지 아닌지 확인하고 c가 동의이면 k에서 [1]인 성격증가, 아ㅣㄴ면 c가 비동의이면 k에서 [0]성격 증가하고
-        if "R" in k or "T" in k:
+
             #c가 choice의 비동인인 동의인지
             #score_idx=0이면 비동의
             #k[0]비동의 성격 유형
-            kind_a[k[score_idx]] += score[c]
+        kind_a[k[score_idx]] += score[c]
             # if "R" in k:
             #     #RT이면 k.find("R") = 0 score[1][0]: 비동의
             #     score[1][k.find("R")] += c
             # elif "T" in k:
             #     score[1][k.find("T")] += c
 
-        elif "C" in k or "F" in k:
-            kind_a[k[score_idx]] += score[c]
-        elif "J" in k or "M" in k:
-            kind_a[k[score_idx]] += score[c]
-        elif "A" in k or "N" in k:
-            kind_a[k[score_idx]] += score[c]
 
  
 
