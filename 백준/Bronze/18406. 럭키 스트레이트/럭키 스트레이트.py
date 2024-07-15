@@ -1,7 +1,7 @@
-num = list(input())
-num1 = map(int, num[:len(num)//2])
-num2 = map(int, num[len(num)//2:])
-if sum(num1) == sum(num2):
+n = input()
+left = map(int, list(n[:len(n)//2]))
+right = map(int, list(n[len(n)//2:]))
+if sum(left) == sum(right):
   print("LUCKY")
 else:
   print("READY")
