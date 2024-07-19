@@ -1,149 +1,75 @@
-import sys
-n = int(sys.stdin.readline().rstrip())
-k = int(sys.stdin.readline().rstrip())
-matrix = [[0] * n for _ in range(n)]
+# 몸에 부딪히거나 벽에 닿으면 게임끝
+#L:왼쪽회전, D:오른쪽회전
+#뱀의 방향이 상하좌우 인지에 따라 방향전환이 다름
+#상하좌우 = 0123
+from collections import deque
+dic = {"상":{"L":"좌", "D":"우"}, "하":{"L":"우", "D":"좌"},
+      "좌":{"L":"하", "D":"상"},"우":{"L":"상", "D":"하"}}
+dx = [-1,1,0,0]
+dy = [0,0,-1,1]
+  
+  
+n = int(input())
+map = [[0] * n for _ in range(n)]
 
-#사과 위치 시키기
+
+k = int(input())
+#map에 사과 위치시키기
 for _ in range(k):
-  x, y = map(int, sys.stdin.readline().rstrip().split())
-  matrix[x-1][y-1] = 1
-
-l = int(sys.stdin.readline().rstrip())
-
-#지금 뱀의 진행 방향, 상하좌우
-status = [0,1,2,3] 
-
-#맨 처음 뱀의 진행 방향: 우
-arrow = status[3]
-
-#움직이는 시간
-sec = 0
-#뱀의 시작 위치 [0][0]
-row = 0
-col = 0
-matrix[row][col] = 2
-
-#뱀의 위치 정보
-p = [[0,0]]
-
-#뱀의 이동 정보
-dis = []
-#뱀 이동.
-
-outer_for = True
-
+  row, col = input().split()
+  map[int(row)-1][int(col)-1] = 1
+  
+l = int(input())
+#큐에 방향 변환 정보 넣기
+q = deque()
 for _ in range(l):
-  x, c = sys.stdin.readline().rstrip().split()
-  dis.append([int(x),c])
+  x, c = input().split()
+  q.append((int(x), c))
 
-idx = 0
-#초기 뱀 설정
-x = dis[idx][0]
-c = dis[idx][1]
-while True:
-  #뱀 회전할 시간이면 회전
-  if idx < l and sec == dis[idx][0]:
-    if arrow == status[0]:
-      if c == "D":
-        arrow = status[3]
-      elif c == "L":
-        arrow = status[2]
-    elif arrow == status[1]:
-      if c == "D":
-        arrow = status[2]
-      elif c == "L":
-        arrow = status[3]
-    elif arrow == status[2]:
-      if c == "D":
-        arrow = status[0]
-      elif c == "L":
-        arrow = status[1]
-    elif arrow == status[3]:
-      if c == "D":
-        arrow = status[1]
-      elif c == "L":
-        arrow = status[0]
-    idx += 1
-    if idx >= l:
-      x = dis[idx-1][0]
-      c = dis[idx-1][1]
-    else:
-      x = dis[idx][0]
-      c = dis[idx][1]
+# x, y = 0, 0 #현재 뱀의 위치
+# n_direct = "우"
+# total_sec = 0
+# nx, ny = 0, 0
+snake = []
+def sol():
+  x, y = 0, 0 #현재 뱀의 위치
+  snake.append((x,y))
+  map[x][y] = 2
+  n_direct = "우"
+  total_sec = 0
+  nx, ny = 0, 0
+  while True:
+    # #방향정보 꺼내서 이동 시작
+    # for sec, direct in q:
+    #   sec -= total_sec
 
-    #벽에 부딪히는 경우
-  if arrow == status[0]:#상
-    #벽에 부딪히는 경우
-    if row <= 0:
-      break
-    if matrix[row-1][col] == 2:#자기 몸에 부딪히는 경우
-      break
+    if len(q) >= 1 and total_sec == q[0][0]: #방향전환 할 시간이 오면 방향 변경
+      s, d = q.popleft()
+      n_direct = dic[n_direct][d] #회전한 결과
+    if n_direct == "상":
+      nx, ny = x + dx[0], y + dy[0]
+    elif n_direct == "하":
+      nx, ny = x + dx[1], y + dy[1]
+    elif n_direct == "좌":
+      nx, ny = x + dx[2], y + dy[2]
+    elif n_direct == "우":
+      nx, ny = x + dx[3], y + dy[3]
+    #뱀이 몸에 닿거나 벽에 닿으명 종료
+    if nx < 0 or nx >= n or ny < 0 or ny >= n or map[nx][ny] == 2:
+      return total_sec + 1
+    if map[nx][ny] == 0:#사과가 없다면
+      #꼬리 삭제
+      tx, ty = snake.pop(0)
+      map[tx][ty] = 0
+      #머리이동
+      snake.append((nx,ny))
+      map[nx][ny] = 2 #머리 옮기고
 
-    if matrix[row-1][col] == 1:
-      row -= 1
-      matrix[row][col] = 2
-      p.append([row,col])
-    else:
-      row -= 1
-      matrix[row][col] = 2
-      p.append([row,col])
+    elif map[nx][ny] == 1: #사과가 있다면
+      map[nx][ny] = 2
+      snake.append((nx,ny))
       
-      x, y = p.pop(0)
-      matrix[x][y] = 0
-        
-  elif arrow == status[1]:#하
-    if row >= n-1:
-      break
-    if matrix[row+1][col] == 2:
-      break
-
-    if matrix[row+1][col] == 1:
-      row += 1
-      matrix[row][col] = 2
-      p.append([row,col])
-    else:
-      row += 1
-      matrix[row][col] = 2
-      p.append([row,col])
-      x,y = p.pop(0)
-      matrix[x][y] = 0
-        
-  elif arrow == status[2]:#좌
-    if col <= 0:
-      break
-    if matrix[row][col-1] == 2:
-      break
-
-    if matrix[row][col-1] == 1:
-      col -= 1
-      matrix[row][col] = 2
-      p.append([row,col])
-    else:
-      col -= 1
-      matrix[row][col] = 2
-      p.append([row,col])
-
-      x,y = p.pop(0)
-      matrix[x][y] = 0
-        
-  elif arrow == status[3]: #우
-    if col >= n-1:
-      break
-    if matrix[row][col+1] == 2:
-      break
-      #뱀의 진행 방향이 우일 경우
-    if matrix[row][col+1] == 1: #사과가 있다면
-      col += 1
-      matrix[row][col] = 2
-      p.append([row,col])
-    else:
-      col += 1
-      matrix[row][col] = 2
-      p.append([row,col])
-      #꼬리 부분 위치 꺼내서 0으로 만들어주기
-      x, y = p.pop(0)
-      matrix[x][y] = 0
-     
-  sec += 1
-      
-print(sec+1)
+    total_sec += 1
+    x, y = nx, ny 
+  
+print(sol())
