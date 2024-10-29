@@ -1,24 +1,23 @@
 #전위 순회: dfs
 n = int(input())
 tree = {}
-visited = {}
+
 
 def pre(start): #전위 순회
     #루트, 왼, 오
     print(start, end="") #루트 첫 방문에 출력
     for i in tree[start]:
-        if '.' not in i and visited[i] == False:
-            visited[i] = True
+        if '.' not in i:
             pre(i)
 
 
-def middle(start): #전위 순회
+def inorder(start): #전위 순회
     #왼쪽, 루트, 오른쪽
     if tree[start][0] != '.':
-        middle(tree[start][0])
+        inorder(tree[start][0])
     print(start, end="") #본인 출력하고 오른쪽, 본인 두번째 방문에 출력
     if tree[start][1] != '.':
-        middle(tree[start][1])
+        inorder(tree[start][1])
 
 def post(start):
     #왼, 오, 루트
@@ -32,18 +31,10 @@ def post(start):
 for i in range(n):
     root, left, right = input().split()
     tree[root] = [left, right]
-    visited[root] = False
 
 pre('A')
+print()
+inorder('A')
 
 print()
-
-for i in range(n):
-    visited[chr(ord('A') + i)] = False
-middle('A')
-
-print()
-
-for i in range(n):
-    visited[chr(ord('A') + i)] = False
 post('A')
