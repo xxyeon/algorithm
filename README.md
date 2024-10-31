@@ -26,3 +26,23 @@ char[] arr = bf.readLine().toCharArrary()
 ```java
 String str = bf.spli(" ") //공백 기준으로 단어 나누기
 ```
+
+### 우선순위 큐
+```java
+import java.util.*;
+//최소 우선순위 큐
+PriorityQueue<Integer> q = new PriorityQueue<Integer>();
+//최대 우선순위 큐
+PriorityQueue<Integer> priorityQueueHighest = new PriorityQueue<>(Collections.reverseOrder());
+
+//compare 오버라이딩 해서 우선순위 결정
+PriorityQueue<Integer> q = new PriorityQueue<Integer>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+            // 양수이면 o1>o2, 음수이면 o1 < o2, 0이면 o1==o2
+                //o1> o2:+, o1 <o2 :- o1==o2 절댓값 비교
+                if (Math.abs(o1) == Math.abs(o2)){ return o1 > o2 ? 1 : -1;}
+                return Math.abs(o1) - Math.abs(o2);
+            }
+        });
+```
