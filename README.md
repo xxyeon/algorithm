@@ -3,3 +3,26 @@
 - 백준 실버~골드, 프로그래머스 레벨3 문제들 푸는 게 목표
 - 2024에는 프로그래머스에 있는 기출 문제 한번씩 다 풀어보기
   - (이코테 책에 있는 기출문제라도 힌트 보지 않고 풀 수 있을 정도의 실력향상이 목표)
+ 
+## 코테 언어 제한으로 Java로 봐야할 경우가 있음
+### InputStream
+throws IOException 예외 던져줘야함
+```java
+BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+```
+### StringBuilder
+```java
+StringBuilder sb = new StringBuilder();
+sb.append();
+```
+
+### 문자열로 입력받은거 배열로 변환 toCharArray()
+```java
+BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+char[] arr = bf.readLine().toCharArrary()
+```
+
+### split으로 단어 나누기
+```java
+String str = bf.spli(" ") //공백 기준으로 단어 나누기
+```
