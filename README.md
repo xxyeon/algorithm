@@ -46,3 +46,13 @@ PriorityQueue<Integer> q = new PriorityQueue<Integer>(new Comparator<Integer>() 
             }
         });
 ```
+
+### stack
+```java
+Stack<Integer> stackInt = new Stack<>();
+stackInt.push(1);
+stackInt.pop();
+stackInt.peak(); //스택에서 마지막 요소 반환하는데 스택에 영향을 주지 않음
+stackInt.empty(); //비어있으면  ture
+stackInt.search(); //메서드의 인자를 스택에서 검색하여 해당 위치 반환, 찾는 값이 없을 경우 -1 반환
+```
