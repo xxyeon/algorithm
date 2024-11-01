@@ -7,8 +7,8 @@
 
 ## 코테 언어 제한으로 Java로 봐야할 경우가 있음
 
-[바킹독 알고리즘 문제집](https://github.com/encrypted-def/basic-algo-lecture/blob/master/workbook.md)   
-자바로는 아직 자료구조 다루는게 부족 -> 자료구조 사용법부터 익히기
+- [바킹독 알고리즘 문제집](https://github.com/encrypted-def/basic-algo-lecture/blob/master/workbook.md)
+  자바로는 아직 자료구조 다루는게 부족 -> 자료구조 사용법부터 익히기
 
 ### InputStream
 
@@ -127,4 +127,23 @@ deque.remoeLast(); //deque의 끝값 삭제, t
 deque.poll(); //deque의 첫값 삭제, 삭제된 값 반환, 실패시 null
 deque.pollLast(); //deque의 끝 값 삭제, 삭제된값 반환, 실패시 null
 
+```
+
+### ListIterator
+
+LinkedList는 k 번째 인덱스를 저장하고 있지 않아서 add(index), remove(index)를 하게 될 경우 O(N)의 시간 복잡도가 나온다.  
+ListIterator는 Iterator를 상속한 인터페이스다. 한마디로 Iterator기능을 다 갖고 더한 기능을 갖고 있다는 소리다.
+
+가장 핵심적으로 Iterator의 위치를 양방향으로 알 수 있는 기능이 있다.  
+문제의 커서를 찾기 위해 처음부터 다시 위치를 찾는게 아니라 기존 위치를 기억하고 앞 뒤로 찾을 수 있다는 어마어마한 장점이 있다
+
+```java
+LinkedList<T> lst = new LinkedList<>();
+ListIterator<T> iter = lst.ListIterator();
+
+iter.hasNext();//다음요소가 존재하는지
+iter.next(); //포인터 오른쪽으로 이동
+iter.hasPrevious();// 이전 요소가 존재하는지
+iter.prevous(); //포인터 왼쪽으로 이동
+iter.remove(); //포인터가 가리키는 요소 삭제 후
 ```
