@@ -147,3 +147,12 @@ iter.hasPrevious();// 이전 요소가 존재하는지
 iter.prevous(); //포인터 왼쪽으로 이동
 iter.remove(); //포인터가 가리키는 요소 삭제 후
 ```
+
+### stream
+reduce(초기값(T), reduce에 적용할 함수(T)): 누적합 구하기
+reduce는 T타입의 Optional을 반환
+```java
+long result = 0;
+result = card.stream().reduce((x, y) -> x+y).get();
+```
+
