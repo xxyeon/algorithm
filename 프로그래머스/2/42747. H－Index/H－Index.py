@@ -8,6 +8,6 @@ def solution(citations):
                 upper += 1
             elif h >= citation:
                 rest += 1
-        if upper >= h and rest <= h:
+        if upper >= h:
             answer = max(answer, h)
     return answer
