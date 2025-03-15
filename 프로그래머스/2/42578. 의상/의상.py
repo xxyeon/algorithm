@@ -1,14 +1,8 @@
-from itertools import combinations
+from collections import Counter
 def solution(clothes):
     answer = 1
-    dict = {}
-    for name, kind in clothes:
-        if kind not in dict:
-            dict[kind] = 1
-        else:
-            dict[kind] += 1
-    print(dict)
-    for key in dict.keys():
-        answer *= dict[key] + 1
+    dict = Counter(cloth for _, cloth in clothes)
+    for cnt in dict.values():
+        answer *= cnt+1
     answer -= 1
     return answer
