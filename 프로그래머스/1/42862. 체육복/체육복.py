@@ -1,16 +1,17 @@
 def solution(n, lost, reserve):
+    n_lost = lost.copy()
     
-    both = set(lost) & set(reserve)
-    lost = list(set(lost) - both)
-    reserve = list(set(reserve) - both)
+    for l in n_lost:
+        if l in reserve:
+            reserve.remove(l)
+            lost.remove(l)
     lost.sort()
     answer = n - len(lost)
     for l in lost:
         if l-1 in reserve:
             reserve.remove(l-1)
             answer += 1
-            continue
-        if l+1 in reserve:
+        elif l+1 in reserve:
             reserve.remove(l+1)
             answer += 1
 
