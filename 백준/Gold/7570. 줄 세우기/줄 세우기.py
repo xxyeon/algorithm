@@ -8,14 +8,12 @@ for num in range(1, n+1):
     dp[child[num-1]] =  num#dp[i] = i번호 학생의 위치
 
 for i in range(1, n):
-    sequence = 1
-    for j in range(i+1, n+1):
-        if dp[i] > dp[j]: #   i번호 학생이 i+1번호 학생보다 뒤에 있다면
-            break
-        else:
-            sequence += 1
-            dp[i] = max(dp[j], dp[i]) #i+1번호 학생이 i번호 학생보다 뒤에 있다면 i번호 학생과 연속 증가
+    if dp[i] < dp[i+1]:
+        sequence += 1
+    else:
+        sequence = 1
     max_sequence = max(max_sequence, sequence)
+   
 
 print(n-max_sequence)
 
