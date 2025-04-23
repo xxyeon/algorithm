@@ -1,8 +1,12 @@
+from bisect import *
+
 n = int(input())
 arr = list(map(int, input().split()))
-dp = [1] * n
+lst = [arr[0]]
+
 for i in range(1, n):
-    for j in range(i):
-        if arr[i] > arr[j]:
-            dp[i] = max(dp[i], dp[j] + 1)
-print(max(dp))
+    if lst[-1] < arr[i]:
+        lst.append(arr[i])
+    idx = bisect_left(lst, arr[i])
+    lst[idx] = arr[i]
+print(len(lst))
