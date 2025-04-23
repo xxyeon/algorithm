@@ -32,6 +32,12 @@ BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 char[] arr = bf.readLine().toCharArrary()
 ```
 
+### stream 사용해서 int 배열로 변환
+```java
+ BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        int[] arr = Arrays.stream(bf.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+```
+
 ### split으로 단어 나누기
 
 ```java
