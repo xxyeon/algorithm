@@ -38,6 +38,9 @@ char[] arr = bf.readLine().toCharArrary()
         int[] arr = Arrays.stream(bf.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 ```
 
+### ArrayList
+`set(idx, value)`: 요소 교체하기
+
 ### split으로 단어 나누기
 
 ```java
