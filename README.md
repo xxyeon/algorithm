@@ -172,6 +172,11 @@ iter.next(); //포인터 오른쪽으로 이동
 iter.hasPrevious();// 이전 요소가 존재하는지
 iter.prevous(); //포인터 왼쪽으로 이동
 iter.remove(); //포인터가 가리키는 요소 삭제 후
+
+//추가
+iter.add();
+//변경: 현재 포인터가 가르키는 값을 수정
+iter.set(value);
 ```
 
 ### stream
