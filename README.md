@@ -80,6 +80,7 @@ stackInt.search(); //메서드의 인자를 스택에서 검색하여 해당 위
 ```
 
 ### Queue
+[LinkedList를 큐로 사용하는 이유](https://mystudylog.tistory.com/199#3.2%20LinkedList%20%ED%81%B4%EB%9E%98%EC%8A%A4-1)
 
 ```java
 import java.util.Queue;
@@ -137,6 +138,22 @@ deque.poll(); //deque의 첫값 삭제, 삭제된 값 반환, 실패시 null
 deque.pollLast(); //deque의 끝 값 삭제, 삭제된값 반환, 실패시 null
 
 ```
+### Iterator
+일련의 데이터 집합에 대해 순차적인 접근을 지원하는 패턴
+보통 배열이나 리스트 같은 경우 순서가 연속적인 데이터 집합이기 때문에 간단한 for을 통해 순회 가능
+해시, 트리 등 컬렉션은 데이터 저장 순서가 정해지지 않고 적재되므로 각 요소들을 어떤 기준으로 접근해야 할지 애매
+단방향으로 순회 가능
+컬렉션 객체에서 `.iterator()`로 생성 가능
+```java
+List<Integer> list = new List<>();
+Iterator<Integer> iter = list.iterator();
+
+
+iter.hasNext(); //iterator에 다음 요소가 있는지
+iter.next(); //다음 값 가져오기
+iter.remove(); iter.next()로 가져온 값을 컬렉션에서 삭제
+```
+
 
 ### ListIterator
 
