@@ -1,56 +1,36 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 class Solution {
-    int[] dx = {0,0,1,-1};
-    int[] dy = {1,-1,0,0};
     public int solution(int[][] maps) {
-        int answer = 0;
-        bfs(0, 0, maps.length, maps[0].length, maps);
-        answer = maps[maps.length-1][maps[0].length-1] == 1 ? -1 : maps[maps.length-1][maps[0].length-1];
-        return answer;
-    }
-    private void bfs(int row, int col, int n, int m, int[][] map) {
-    //최단거리는 bfs
-        Queue<Node> queue = new LinkedList<>();
-        queue.add(new Node(row, col));
+        int rows = maps.length;
+        int cols = maps[0].length;
+
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // 상하좌우
+
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{0, 0, 1}); // 시작 위치와 거리
+
         while (!queue.isEmpty()) {
-            Node node = queue.poll();
-            int x = node.getX();
-            int y = node.getY();
-            
-            for (int i=0; i<4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-                if (nx >= n || nx < 0 || ny >= m || ny < 0) continue;
-                if (map[nx][ny] != 0) {
-                    if(map[nx][ny] == 1) {
-                        map[nx][ny] = map[x][y] + 1;
-                        queue.add(new Node(nx, ny));
-                    }
-                    else if (map[x][y] + 1 < map[nx][ny]) {
-                        map[nx][ny] = map[x][y] + 1;
-                        queue.add(new Node(nx, ny));
-                    }   
-                    
+            int[] current = queue.poll();
+            int row = current[0];
+            int col = current[1];
+            int distance = current[2];
+
+            if (row == rows - 1 && col == cols - 1) {
+                return distance; // 목적지에 도달한 경우 최단거리 반환
+            }
+
+            for (int[] dir : directions) {
+                int newRow = row + dir[0];
+                int newCol = col + dir[1];
+
+                if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && maps[newRow][newCol] == 1) {
+                    maps[newRow][newCol] = 0; // 방문한 위치는 재방문하지 않도록 표시
+                    queue.offer(new int[]{newRow, newCol, distance + 1});
                 }
             }
         }
-    }
-    
-}
-class Node {
-    int x;
-    int y;
-    Node(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-    
-    int getX() {
-        return x;
-    }
-    int getY() {
-        return y;
+
+        return -1; // 목적지에 도달하지 못한 경우
     }
 }
