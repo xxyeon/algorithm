@@ -1,10 +1,10 @@
 # [level 3] 이중우선순위큐 - 42628 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42628) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42628?language=java) 
 
 ### 성능 요약
 
-메모리: 15.5 MB, 시간: 280.14 ms
+메모리: 132 MB, 시간: 138.79 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2025년 03월 18일 15:22:20
+2025년 05월 02일 15:26:51
 
 ### 문제 설명
 
