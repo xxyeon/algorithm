@@ -4,54 +4,41 @@ import java.util.*;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-		int[] input = Arrays.stream(bf.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+		StringTokenizer st = new StringTokenizer(bf.readLine());
 
-		int max = Integer.MIN_VALUE;
-		int n = input[0];
-		int d = input[1];
-		int k = input[2];
-		int c = input[3];
+		int n = Integer.parseInt(st.nextToken());
+		int d = Integer.parseInt(st.nextToken());
+		int k = Integer.parseInt(st.nextToken());
+		int c = Integer.parseInt(st.nextToken());
 
-		int[] arr = new int[n*2];
-		for(int i = 0; i < n; i++) {
-			arr[i] = Integer.parseInt(bf.readLine());
-		}
-		for(int i = n; i < n*2; i++) {
-			arr[i] = arr[i-n];
+		int[] sushi = new int[n];
+		for (int i = 0; i < n; i++) {
+			sushi[i] = Integer.parseInt(bf.readLine());
 		}
 
-		int start = 0;
-		int end = 0;
+		int[] count = new int[d + 1]; // 초밥 종류 카운트
 		int kind = 0;
 
-		Map<Integer, Integer> map = new HashMap<>();
-		for(int i = 1; i < d+1; i++) {
-			map.put(i, 0);
+		// 초기 윈도우 설정
+		for (int i = 0; i < k; i++) {
+			if (count[sushi[i]]++ == 0) kind++;
 		}
-		map.put(c, 1);
-		while (start < n) {
-			if(kind == k) {
-				// System.out.println(set.toString());
-				//map에서 0이 아닌 것들 세기
-				int cnt = 0;
-				for(int value : map.values()) {
-					if (value != 0) {
-						cnt++;
-					}
-				}
-				max = Math.max(max, cnt);
-				// max = set.contains(c) ? Math.max(max, set.size()) : Math.max(max, set.size() + 1);
-				// set.remove(arr[start++]);
-				map.put(arr[start], map.get(arr[start]) - 1);
-				start++;
-				kind--;
-			} else {
-				map.put(arr[end], map.get(arr[end]) + 1);
-				end++;
-				kind++;
-			}
+
+		int max = (count[c] == 0) ? kind + 1 : kind;
+
+		// 슬라이딩 윈도우
+		for (int i = 1; i < n; i++) {
+			// remove the leftmost sushi
+			if (--count[sushi[i - 1]] == 0) kind--;
+
+			// add the next sushi
+			int next = sushi[(i + k - 1) % n];
+			if (count[next]++ == 0) kind++;
+
+			int total = (count[c] == 0) ? kind + 1 : kind;
+			max = Math.max(max, total);
 		}
+
 		System.out.println(max);
 	}
-
 }
