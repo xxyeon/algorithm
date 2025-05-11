@@ -1,40 +1,36 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.Arrays;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+	public static void main(String[] args) throws IOException {
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		// StringBuilder sb = new StringBuilder();
 
-        int T = sc.nextInt(); // 총 시간
-        int W = sc.nextInt(); // 최대 이동 횟수
+		String[] input = bf.readLine().split(" ");
+		int time = Integer.parseInt(input[0]);
+		int[] tree = new int[time+1];
+		int w = Integer.parseInt(input[1]);
 
-        int[] fruits = new int[T + 1]; // 자두 떨어지는 위치 (1 또는 2)
-        for (int i = 1; i <= T; i++) {
-            fruits[i] = sc.nextInt();
-        }
-
-        // dp[i][j]: i초일 때 j번 움직였을 때 최대 자두 개수
-        int[][] dp = new int[T + 1][W + 1];
-
-        for (int t = 1; t <= T; t++) {
-            for (int w = 0; w <= W; w++) {
-                int tree = (w % 2 == 0) ? 1 : 2; // 현재 위치한 나무
-
-                if (w == 0) {
-                    // 움직이지 않은 경우, 이전 상태에서 이어받기
-                    dp[t][w] = dp[t - 1][w] + (fruits[t] == tree ? 1 : 0);
-                } else {
-                    // 이전 상태에서 이동하지 않거나, 이동해서 왔을 경우 중 최대 선택
-                    dp[t][w] = Math.max(dp[t - 1][w], dp[t - 1][w - 1]) + (fruits[t] == tree ? 1 : 0);
-                }
-            }
-        }
-
-        // 정답: T초일 때, W번까지 이동해서 얻을 수 있는 자두 최대값
-        int max = 0;
-        for (int w = 0; w <= W; w++) {
-            max = Math.max(max, dp[T][w]);
-        }
-
-        System.out.println(max);
-    }
+		for(int i =1; i < time+1; i++) {
+			tree[i] = Integer.parseInt(bf.readLine());
+		}
+		int[][] dp = new int[time+1][w+1];
+		for(int i =1; i < time+1; i++){
+			for (int k = 0; k < w+1; k++) {
+				int position = k % 2 == 1 ? 2 : 1; //k가 홀수이면 2번 나무에 있는것
+				if(k==0) { //안움직이는 경우
+					dp[i][k] = dp[i-1][k] + (tree[i] == position ? 1 : 0);
+				} else {
+					dp[i][k] = Math.max(dp[i-1][k-1], dp[i-1][k]) + (tree[i] == position ? 1 : 0);
+				}
+			}
+		}
+		//dp[time][0~w]중에서 max
+		int max = Integer.MIN_VALUE;
+		for(int i = 0; i < w+1; i++) {
+			max = Math.max(max, dp[time][i]);
+		}
+		System.out.print(max);
+	}
 }
+
