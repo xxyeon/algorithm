@@ -36,18 +36,18 @@ public class Main {
 
 		answer = n;
 		dfs();
-		if(songAns == 0) answer = -1;
+		// if(songAns == 0) answer = -1;
 		System.out.print(answer);
 
 	}
 
 	private static void dfs() {
-		// if (use == n && songAns == 0) {
-		// 	//기타 모두 사용했는데
-		//
-		// 	answer = -1;
-		// 	return;
-		// }
+		if (songAns == 0) {
+			//기타 모두 사용했는데
+
+			answer = -1;
+
+		}
 		int sum = 0; //기타 하나라도 사용했을 경우에만.. 안그러면 초기에 songAns = 0, sum = 0으로 answer = 0으로 된다.
 		for (int i : possible) {
 			if(i>0) {
