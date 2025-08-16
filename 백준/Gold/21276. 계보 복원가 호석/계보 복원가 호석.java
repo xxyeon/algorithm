@@ -59,6 +59,7 @@ public class Main {
         for (String s : name) {
             sb.append(s).append(" ");
             sb.append(result.get(s).size()).append(" ");
+            result.get(s).sort(Comparator.naturalOrder());
             for(String child : result.get(s)) {
                 sb.append(child).append(" ");
             }
