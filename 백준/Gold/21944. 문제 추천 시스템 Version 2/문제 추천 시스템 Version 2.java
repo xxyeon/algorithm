@@ -1,123 +1,127 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.TreeSet;
+import java.util.*;
+
+class Problem implements Comparable<Problem>{
+    int number, level, algo;
+    Problem(int number, int level, int algo) {
+        this.number = number;
+        this.level = level;
+        this.algo = algo;
+    }
+
+    @Override
+    public int compareTo(Problem p) {
+        if (level == p.level) return number - p.number;
+        return level - p.level;
+    }
+}
 
 public class Main {
+    static Map<Integer, Problem> recommendLst = new HashMap<>();
+    static TreeSet<Problem> set = new TreeSet<>();
+    static Map<Integer, TreeSet<Problem>> map = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        StringBuilder sb = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        TreeSet<Problem> tree = new TreeSet<>();
-        List<TreeSet<Problem>> subtrees = new ArrayList<>();
-        for (int i = 0; i <= 100; i++) {
-            subtrees.add(new TreeSet<Problem>());
-        }
-        HashMap<Integer, int[]> hMap = new HashMap<>();
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st;
 
+        int N = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < N; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int no = Integer.parseInt(st.nextToken());
+            st = new StringTokenizer(br.readLine());
+            int number = Integer.parseInt(st.nextToken());
             int level = Integer.parseInt(st.nextToken());
-            int group = Integer.parseInt(st.nextToken());
-            subtrees.get(group).add(new Problem(no, level, group));
-            tree.add(new Problem(no, level, group));
-            hMap.put(no, new int[] {level, group});
+            int algo = Integer.parseInt(st.nextToken());
+
+            Problem p = new Problem(number, level, algo);
+            recommendLst.put(number, p);
+
+            set.add(p);
+            TreeSet<Problem> value = map.get(algo) == null ? new TreeSet<>() : map.get(algo);
+            value.add(p);
+            map.put(algo, value);
         }
 
+        int Q = Integer.parseInt(br.readLine());
 
-        int M = Integer.parseInt(br.readLine());
-        for (int i = 0; i < M; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            String command = st.nextToken();
-            if (command.equals("recommend")) {
-                int group = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < Q; i++) {
+            st = new StringTokenizer(br.readLine());
+            String op = st.nextToken();
+
+            if (op.equals("recommend")) {
+                int g = Integer.parseInt(st.nextToken());
                 int x = Integer.parseInt(st.nextToken());
-                if (x == 1) {
-                    sb.append(subtrees.get(group).last().no+"\n");
-                } else {
-                    sb.append(subtrees.get(group).first().no+"\n");
+                if (x == 1) { // 가장 어려운 문제
+                    int number = map.get(g).last().number;
+                    sb.append(number).append('\n');
+                } else { // 가장 쉬운 문제
+                    int number = map.get(g).first().number;
+                    sb.append(number).append('\n');
                 }
-            } else if (command.equals("recommend2")) {
+            }
+
+            else if (op.equals("recommend2")) {
                 int x = Integer.parseInt(st.nextToken());
-                if (x == 1) {
-                    sb.append(tree.last().no+"\n");
-                } else {
-                    sb.append(tree.first().no+"\n");
+                if (x == 1) { // 가장 어려운 문제
+                    int number = set.last().number;
+                    sb.append(number).append('\n');
+                } else { // 가장 쉬운 문제
+                    int number = set.first().number;
+                    sb.append(number).append('\n');
                 }
-            } else if (command.equals("recommend3")) {
+            }
+
+            else if (op.equals("recommend3")) {
                 int x = Integer.parseInt(st.nextToken());
                 int level = Integer.parseInt(st.nextToken());
-                if (x == 1) {
-                    if (tree.ceiling(new Problem(0, level, 0)) == null) sb.append("-1\n");
-                    else sb.append(tree.ceiling(new Problem(0, level, 0)).no+"\n");
-                } else {
-                    if (tree.lower(new Problem(0, level, 0)) == null) sb.append("-1\n");
-                    else sb.append(tree.lower(new Problem(0, level, 0)).no+"\n");
+                int number = -1;
+                Problem problem = new Problem(number, level, -1);
+                if (x == 1) { // 크거나 같은 난이도 중 가장 쉬운 문제
+                    Problem p = set.ceiling(problem);
+                    if (p != null) {
+                        number = p.number;
+                    }
+                } else { // 작거나 같은 난이도 중 가장 어려운 문제
+                    Problem p = set.floor(problem);
+                    if (p != null) {
+                        number = p.number;
+                    }
                 }
-            } else if (command.equals("add")) {
-                int no = Integer.parseInt(st.nextToken());
+                sb.append(number).append('\n');
+            }
+
+            else if (op.equals("add")) {
+                int number = Integer.parseInt(st.nextToken());
                 int level = Integer.parseInt(st.nextToken());
-                int group = Integer.parseInt(st.nextToken());
-                subtrees.get(group).add(new Problem(no, level, group));
-                tree.add(new Problem(no, level, group));
-                hMap.put(no, new int[] {level, group});
-            } else {
-                int no = Integer.parseInt(st.nextToken());
-                if (!hMap.containsKey(no)) continue;
-                int level = hMap.get(no)[0];
-                int group = hMap.get(no)[1];
-                hMap.remove(no);
-                tree.remove(new Problem(no, level, group));
-                subtrees.get(group).remove(new Problem(no, level, group));
+                int algo = Integer.parseInt(st.nextToken());
+
+                Problem p = new Problem(number, level, algo);
+                recommendLst.put(number, p);
+
+                set.add(p);
+                TreeSet<Problem> value = map.get(algo) == null ? new TreeSet<>() : map.get(algo);
+                value.add(p);
+                map.put(algo, value);
+            }
+
+            else if (op.equals("solved")) {
+                int number = Integer.parseInt(st.nextToken());
+                Problem p = recommendLst.remove(number);
+
+                // treeAsc 제거
+                TreeSet<Problem> set1 = map.get(p.algo);
+                set1.remove(p);
+                if(set1.isEmpty()) {
+                    map.remove(p.algo);
+                }
+                // mapAsc 제거
+                set.remove(p);
             }
         }
-        System.out.println(sb.toString());
+
+        System.out.print(sb);
     }
-
-
-    static class Problem implements Comparable<Problem> {
-        int no;
-        int level;
-        int group;
-
-        public Problem(int no, int level, int group) {
-            this.no = no;
-            this.level = level;
-            this.group = group;
-        }
-
-        @Override
-        public int compareTo(Problem o) {
-            if (level == o.level) {
-                return Integer.compare(no, o.no);
-            }
-            return Integer.compare(level, o.level);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            Problem other = (Problem) obj;
-            if (group != other.group)
-                return false;
-            if (level != other.level)
-                return false;
-            if (no != other.no)
-                return false;
-            return true;
-        }
-    }
-
 }
