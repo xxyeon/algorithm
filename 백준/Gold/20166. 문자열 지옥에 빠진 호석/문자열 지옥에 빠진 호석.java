@@ -1,18 +1,29 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
+class Position {
+    int  x, y;
+    Position(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
 public class Main {
-    static int N, M, K;
     static char[][] graph;
-    static String[] words;
+    static int K;
+    static int N, M;
+    static TreeMap<String, Integer> count = new TreeMap<>();
+    static char[][] init;
     static int[][] direction = {
-            {0, 1}, {0,-1},{1, 0},{-1,0}, {-1,-1}, {-1,1}, {1,-1}, {1,1}
+        {0, 1}, {0,-1},{1, 0},{-1,0}, {-1,-1}, {-1,1}, {1,-1}, {1,1}
     };
 
-    // dp[x][y][len] : (x,y)에서 시작해서 길이가 len인 문자열을 만들 수 있는 경우의 수
-    static HashMap<String, Integer> cache = new HashMap<>();
-    static HashMap<String, Integer> result = new HashMap<>();
 
+
+    static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -20,57 +31,45 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
-        graph = new char[N][M];
-        for (int i = 0; i < N; i++) {
-            String line = br.readLine();
-            for (int j = 0; j < M; j++) {
-                graph[i][j] = line.charAt(j);
+        init = new char[N][M];
+        for(int i=0; i<N; i++) {
+            char[] t = br.readLine().toCharArray();
+            for(int j=0; j <M;j++) {
+                init[i][j] = t[j];
             }
         }
 
-        words = new String[K];
-        for (int i = 0; i < K; i++) {
-            words[i] = br.readLine();
-            result.put(words[i], 0);
-        }
+        makeStr();
 
-        // 각 단어마다 모든 시작점에서 DFS 시도
-        for (String word : words) {
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < M; j++) {
-                    if (graph[i][j] == word.charAt(0)) {
-                        result.put(word, result.get(word) + dfs(i, j, 1, word));
-                    }
+        for(int i=0; i<K;i++) {
+            String str = br.readLine();
+            int num = count.getOrDefault(str,0);
+            sb.append(num).append('\n');
+        }
+        System.out.print(sb.toString());
+    }
+
+    public static void makeStr() {
+        for(int i=1; i<=5; i++) {
+            for(int x=0;x<N;x++) {
+                for(int y=0; y<M; y++) {
+                    permutation(x, y, 1, i, String.valueOf(init[x][y]));
                 }
             }
         }
-
-        // 결과 출력
-        for (String word : words) {
-            System.out.println(result.get(word));
-        }
     }
 
-    // DFS + 메모이제이션
-    static int dfs(int x, int y, int idx, String word) {
-        if (idx == word.length()) {
-            return 1;
+    public static void permutation(int x, int y, int idx, int len, String str) {
+        if(len == idx) {
+            count.put(str, count.getOrDefault(str, 0) + 1);
+            return;
         }
-
-        String key = x + "," + y + "," + idx + "," + word;
-        if (cache.containsKey(key)) return cache.get(key);
-
-        int count = 0;
         for (int[] dir : direction) {
-            int nx = (x + dir[0] + N) % N; // 토러스 구조
+            int nx = (x + dir[0] + N) % N;
             int ny = (y + dir[1] + M) % M;
 
-            if (graph[nx][ny] == word.charAt(idx)) {
-                count += dfs(nx, ny, idx + 1, word);
-            }
-        }
 
-        cache.put(key, count);
-        return count;
+            permutation(nx, ny, idx + 1, len, str + init[nx][ny]);
+        }
     }
 }
