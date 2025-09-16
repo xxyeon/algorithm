@@ -1,76 +1,47 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
-public class Main {
 
+public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String num = br.readLine();
-        char[] ch = num.toCharArray();
-        //최소 M최대한 연결, K단위로 자르기 (K미포함)
-        //최대 M최대한 나누기, K단위로 자르기 (K포함)
-        int start = 0, end = 0;
-        String minNum = "";
-        StringBuilder sb = new StringBuilder();
-        while(start < ch.length && end < ch.length) {
-            if(ch[end] == 'K') {
-                if(end > start) {
-                    sb.append("1");
-                    for(int i=0;i<end-start-1;i++) sb.append("0");
-//                    minNum += Math.pow(10, end - start-1); //K 전까지 자르기
+        char[] ch = br.readLine().toCharArray();
 
+        StringBuilder maxNum = new StringBuilder();
+        StringBuilder minNum = new StringBuilder();
+
+        int mCount = 0; // 연속된 M 개수
+
+        for (char c : ch) {
+            if (c == 'M') {
+                mCount++;
+            } else { // 'K'
+                // 최대값: M들 + K → "5" + "0".repeat(mCount)
+                maxNum.append("5");
+                for (int i = 0; i < mCount; i++) maxNum.append("0");
+
+                // 최소값: M들을 따로따로 → "1" + "0".repeat(mCount-1) + "5"
+                if (mCount > 0) {
+                    minNum.append("1");
+                    for (int i = 0; i < mCount - 1; i++) minNum.append("0");
                 }
-                sb.append("5"); //k미포함 -> K한개이면 10^0 * 5
-                start = end + 1;
-                end = start;
-            } else {
-                end++;
-            }
+                minNum.append("5");
 
-            if (end == ch.length) {
-                if (ch[end-1] == 'M') {
-                    sb.append("1");
-                    for (int i = 0; i < end - start-1; i++) sb.append("0");
-
-//                    minNum += (int)Math.pow(10, end - start );
-                }
-            }
-
-        }
-
-        start=0;
-        end = 0;
-        String maxNum = "";
-        StringBuilder maxsb = new StringBuilder();
-        while (start < ch.length && end < ch.length) {
-            if (ch[end] == 'K') {
-                maxsb.append("5");
-                for (int i = 0; i < end - start; i++) maxsb.append("0");
-
-//                maxNum += (int)Math.pow(10, end - start) * 5; //K 전까지 자르기
-                start = end+1;
-                end = start;
-            } else {
-                end++;
-            }
-            if (end == ch.length) {
-                if(ch[end-1] == 'M') {
-
-                    for(int i=0; i< end - start; i++) {
-                        maxsb.append("1");
-                    }
-                }
+                mCount = 0;
             }
         }
 
-        System.out.println(maxsb.toString());
-        System.out.println(sb.toString());
+        // 남은 M 처리
+        if (mCount > 0) {
+            // 최대값: M이 남으면 그냥 "1" 반복
+            for (int i = 0; i < mCount; i++) maxNum.append("1");
 
+            // 최소값: M 묶어서 "1" + "0".repeat(mCount-1)
+            minNum.append("1");
+            for (int i = 0; i < mCount - 1; i++) minNum.append("0");
+        }
 
-
+        System.out.println(maxNum);
+        System.out.println(minNum);
     }
-
-
-
 }
