@@ -33,14 +33,20 @@ public class Main {
         StringBuilder sb =new StringBuilder();
         for(int num : number) {
             //욱제가 장난친 스티커 번호가 S를 계산하는 것에 영향을 주지 않으면 이전에 계산한 값 사용
-            int idx = num - 1;
-            cow[idx] *= -1;
+            cow[num-1] = cow[num-1] * -1;
             //+-4
-            for (int i = -3; i <= 3; i++) {
-                int pos = (idx + i + n) % n;
-                answer -= memo[pos];
-                memo[pos] = calS(pos);
-                answer += memo[pos];
+            for(int i=0;i<4;i++) {
+                answer -= memo[((num - 1) + i) % n];
+//                answer -= memo[(((num - 1) - i) + n) % n];
+
+                memo[((num - 1) + i) % n] = calS(((num - 1) + i) % n);
+                answer += memo[((num - 1) + i) % n];
+
+                answer -= memo[(((num - 1) - i) + n) % n];
+                memo[(((num - 1) - i) + n) % n] = calS((((num - 1) - i) + n) % n);
+
+//                answer += memo[((num - 1) + i) % n];
+                answer += memo[(((num - 1) - i) + n) % n];
             }
 
 
