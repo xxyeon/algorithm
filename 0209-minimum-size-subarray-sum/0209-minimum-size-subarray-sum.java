@@ -15,7 +15,6 @@ class Solution {
 
         while(start <= end) {
             //이분탐색으로 길이 탐색 -> O(logN)
-            System.out.println(start + " " + end);
             int middle = (start + end) / 2 ;
             int k = len[middle];
             if(find(k, nums, target)) {
